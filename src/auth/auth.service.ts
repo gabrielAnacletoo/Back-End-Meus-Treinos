@@ -50,6 +50,9 @@ export class AuthService {
       ...PayLoad,
       profileImage: ImageURL,
     };
+  
+
+    
 
     try {
       if (
