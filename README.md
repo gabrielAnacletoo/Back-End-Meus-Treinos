@@ -1,20 +1,20 @@
-# 🚀 API Culture Power
+# 🚀 Uma API para gerenciar meus treinos na academia
  ### Bem vindo(a)!
  ```bash
-Esta API foi desenvolvida para uma empresa que deseja gamificar os resultados e recompensar seus colaboradores de acordo com seu desempenho. Os colaboradores podem resgatar produtos da loja virtual da empresa usando as joias adquiridas durante suas atividades.
+Esta API foi desenvolvida para que eu pudesse registrar meus treinos na academia, monitor o tempo etc...
 ```
 ## 💻 Instalação
 
 Antes de começar, certifique-se de ter o [Node.js](https://nodejs.org/) instalado em sua máquina.
 ```bash
 # Clone esse repositório
-- $ git clone https://github.com/modulo4turma2Arnia/Back-End_Module-4
+- $ git clone https://github.com/gabrielAnacletoo/Back-End-Meus-Treinos
 
 # Vá para o repositório Back-end
-- $ cd Back-Modulo4-Turma2
+- $ cd Back-End-Meus-Treinos
 
 # Instale as dependencias
-- $ npm i firebase typeorm pg @nestjs/core @nestjs/common @nestjs/swagger @nestjs/jwt @nestjs/config bcrypt class-transformer class-validator
+- $ npm i typeorm pg @nestjs/core @nestjs/common @nestjs/swagger @nestjs/jwt @nestjs/config bcrypt class-transformer class-validator
 
 
 # Rode a aplicação
@@ -24,10 +24,8 @@ Antes de começar, certifique-se de ter o [Node.js](https://nodejs.org/) instala
 ```bash
 - # Auth
 - $ Responsavel pela autenticação da API.
-- # Products
-- $ Registra os produtos, altera e também é responsavel por remover um produto do banco de dados.
-- # Joias
-- $ É a entidade responsavel por criar as jóias, assim como em prudutos também tem todos as rotas de um CRUD.
+- # Workouts
+- $ Responsavel pela criações de treinos do usuário.
 - #  Users
 - $ E por último a entidade de user que é responsavel pelo usuário. assim como nas outras entidades também tem todos as rotas de um CRUD.
 ```
@@ -48,21 +46,13 @@ Antes de começar, certifique-se de ter o [Node.js](https://nodejs.org/) instala
 
 ## 🛣️ Rotas da API
 
-### 🔵 GET v1/users/infouser
+### 🔵 GET /users/infouser
 - **Descrição**: Retorna todas as informações do usuário. (Necessita autenticação).
-### 🔵 GET v1/users/:id
-- **Descrição**: Retorna o usuário com id encontrado. (Necessita autenticação).
-### 🔵 GET v1/users
-- **Descrição**: Retorna todos os usuários cadastrados no Banco de dados. (Necessita autenticação).
-### 🔵 GET v1/products
-- **Descrição**: Retorna todos os Produtos, também é possivel filtrar.(Necessita autenticação).
-- **Exemplos de Query**: /v1/products?price=2 , /v1/products?name=apple, v1/products?page=1&limit=10
-### 🔵 GET v1/products/:id
-- **Descrição**: Retorna o produto encontrado com o mesmo id. (Necessita autenticação).
-### 🔵 GET v1/jewelry
-- **Descrição**: Retorna todas as jóias cadastradas no Banco. (Necessita  autenticação).
+### 🔵 GET /workouts
+- **Descrição**: Retorna o todos os treinos registrados (Necessita autenticação).
 
-### 🟢 POST v1/auth
+
+### 🟢 POST /auth
 - **Descrição**: Verifica o login e retornar um token.
 - **Corpo da Requisição**:
 ```javascript
@@ -71,7 +61,7 @@ email: "fulano@ciclano.com.br",
 password: "senha1234"
 }
 ```
-### 🟢 POST v1/auth/register
+### 🟢 POST /auth/register
 - **Descrição**: Cria um usuário no bando de dados(Necessita autenticação).
 - **Aviso**: A Imagem de perfil do usuário não é obrigatória. 
 - **Corpo da Requisição**:
@@ -84,68 +74,43 @@ profileImage: "URL Da imagem enviada."
 password: "senha123"
 }
 ```
-### 🟢 POST v1/users/rescue/:id
-- **Descrição**: Resgata um produto e salva no usuário(Necessita autenticação).
-- **Descrição**: O Usuário precisa estar logado.
+- **Caso queira criar um adm adicionar a propriedade**:
+```javascript
+{
+role: "admin"
+}
+```
 
-### 🟢 POST /v1/products
-- **Descrição**: Cadastra um produto no sistema.
-- **Descrição**: Todos os produtos devem ter imagens.
+### 🟢 POST /workouts
+- **Descrição**: Cadastra um treino no usuário.
 - **Corpo da Requisição**:
 ```javascript
 {
-	"name": "Fritadeira Air Fryer Sem Óleo Britânia",
-	"description": "Fritadeira Air Fryer Sem Óleo...",
-	"price": "15",
-  "image": "URL da imagem"
+	"trainingName": "treino de costas e biceps",
+	"dayOfWeek": "quarta-feira",
+	"exercises": [
+		{
+			"name": "Rosca 21",
+			"series": "3",
+			"repetitions": "7"
+		},
+		{
+			"name": "Puxada de frente",
+			"series": "3",
+			"repetitions": "12"
+		},
+		{
+			"name": "Pulldown",
+			"series": "3",
+			"repetitions": "12"
+		}
+	]
 }
 ```
 
 
-### 🟢 POST /v1/jewelry/:userId/:jewelryId
-- **Descrição**: Atribui uma jóia a um usuário.
 
-### 🟢 POST v1/jewelry
-- **Descrição**: Cria uma jóia no banco de dados.
-- **Descrição**: Todas as jóias devem ter imagens.
-```javascript
-{
-	"type": "Joia do Tempo",
-	"habilities": "Nesta joia está a possibilidade de manejo da administr.....",
-  "image": "URL da imagem"
-}
-```
-
-
-### 🟡 PATH /v1/jewelry/:id
-- **Descrição**: Atualiza as propriedades da jóia encontrada.
-- **Corpo da Requisição**:
- ```javascript
-{
-type: "Joia da Mente Modificada"
-}
-```
-
-### 🟡 PATH /v1/products/:id
-- **Descrição**: Atualiza as propriedades de um produto encontrada.
-- **Corpo da Requisição**:
- ```javascript
-{
-name: "JBL Tune 720BT"
-}
-```
-
-### 🟡 PATH /v1/users/chg/password
-- **Descrição**: Atualiza a senha do usuário.
-- **Corpo da Requisição**:
- ```javascript
-{
-	currentPassword: "senha123",
-	newPassword: "senha1234"
-}
-```
-
-### 🟡 PATH /v1/users/:id
+<!-- ### 🟡 PATH /v1/users/:id
 - **Descrição**: Atualiza as propriedades de um usuário encontrado.
 - **Corpo da Requisição**:
  ```javascript
@@ -153,16 +118,16 @@ name: "JBL Tune 720BT"
   FirstName: "Fulano Editado"
 
 }
-```
+``` -->
 
-### 🔴 DELETE /v1/users/:id
+<!-- ### 🔴 DELETE /v1/users/:id
 - **Descrição**: Remove um usuário específico do banco de dados.
 
 ### 🔴 DELETE /v1/products/:id
-- **Descrição**: Remove um produto específico do banco de dados.
+- **Descrição**: Remove um produto específico do banco de dados. -->
 
 
 
 ### Detalhes Adicionais
-- **Autores da API:** [Gabriel Anacleto](https://www.linkedin.com/in/gabriel-anacletoo/)  [Guilherme](https://github.com/syus13) 
+- **Autores da API:** [Gabriel Anacleto](https://www.linkedin.com/in/gabriel-anacletoo/) 
 - **Contato:** gabrielanacleto159@live.com
