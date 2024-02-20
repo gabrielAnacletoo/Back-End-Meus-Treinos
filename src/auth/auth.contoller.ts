@@ -3,7 +3,11 @@ import {
   Controller,
   HttpCode,
   Post,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { FileDTO } from './dto/files.dto';
 import { UserRegisterDto } from './dto/register.dto';
 import { AuthService } from './auth.service';
 import { LoginDTO } from './dto/login.dto';
@@ -14,12 +18,13 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Post('register')
+  @UseInterceptors(FileInterceptor('profileImage'))
   async register(
     @Body() UserPayLoad: UserRegisterDto,
+    @UploadedFile() image: FileDTO,
   ) {
-    return await this.authService.RegisterAuthService(UserPayLoad);
+    return await this.authService.RegisterAuthService(UserPayLoad, image);
   }
-
 
   @HttpCode(200)
   @Post()
