@@ -4,7 +4,6 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
-  JoinTable,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -20,10 +19,16 @@ export class UserEntity {
   id: number;
 
   @Column({ type: 'varchar', length: 32, nullable: false })
-  name: string;
+  FirstName: string;
+
+  @Column({ type: 'varchar', length: 64, nullable: false })
+  LastName: string;
 
   @Column({ type: 'varchar', length: 128, nullable: false, unique: true })
   email: string;
+
+  @Column({ type: 'varchar', length: 256, nullable: true })
+  profileImage: string;
 
   @Column({ type: 'varchar', length: 64, nullable: false, select: false })
   password: string;
@@ -36,9 +41,11 @@ export class UserEntity {
   })
   role: RoleEnum;
 
-@OneToMany(() => WorkoutEntity, (workout) => workout.user)
-Workouts: WorkoutEntity[];
+  @Column({ type: 'int', default: 0 })
+  credits: number;
 
+  @OneToMany(() => WorkoutEntity, (workout) => workout.user)
+  Workouts: WorkoutEntity[];
 
   @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;

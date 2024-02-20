@@ -33,7 +33,23 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async RegisterAuthService(PayLoad: UserRegisterDto) {
+  async RegisterAuthService(PayLoad: UserRegisterDto, file: FileDTO) {
+    let ImageURL: string | null = null;
+
+    // se imagem existir
+    if (file) {
+      const [extension] = file.originalname.split('.');
+      const formattedFilename = `${Date.now()}.${extension}`;
+
+      const storageRef = ref(storage, formattedFilename);
+      await uploadBytesResumable(storageRef, file.buffer);
+      ImageURL = await getDownloadURL(storageRef);
+    }
+
+    const UserPayload = {
+      ...PayLoad,
+      profileImage: ImageURL,
+    };
 
     try {
       if (
@@ -45,7 +61,7 @@ export class AuthService {
         );
       }
       // Se não tiver, criar um
-      const New_User = this.usersRepository.create(PayLoad);
+      const New_User = this.usersRepository.create(UserPayload);
       //salvar no banco
       await this.usersRepository.save(New_User);
 
