@@ -16,7 +16,11 @@ export class UserRegisterDto {
   //  @Length(0, 64) limita o tamanho da string entre 0 e 64 caracteres.
   @IsNotEmpty()
   @Length(0, 32)
-  name: string;
+  FirstName: string;
+
+  @IsNotEmpty()
+  @Length(0, 64)
+  LastName: string;
 
   // @IsEmail() valida se o valor a propriedade é um e-mail válido.
   @IsEmail()
