@@ -8,7 +8,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 // enquanto PostgresConnectionOptions contém as opções específicas para a conexão com um banco de dados PostgreSQL.
 import { TypeOrmModuleAsyncOptions } from '@nestjs/typeorm';
 import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions';
-import { WorkoutEntity , UserEntity } from './entities';
+import { WorkoutEntity , UserEntity, StudentsEntity } from './entities';
 
 // Configurando as opções assíncronas para o TypeORM usando o NestJS.
 export default <TypeOrmModuleAsyncOptions>{
@@ -34,7 +34,7 @@ export default <TypeOrmModuleAsyncOptions>{
       database: configService.get('DB_DATABASE'),
 
       // Lista de entidades (modelos) do TypeORM. Pode ser estendida conforme necessário.
-      entities: [UserEntity, WorkoutEntity],
+      entities: [UserEntity, WorkoutEntity, StudentsEntity],
 
       // Synchronize é utilizado para criar automaticamente as tabelas no banco de dados.
       synchronize: true,

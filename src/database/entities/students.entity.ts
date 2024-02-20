@@ -1,5 +1,4 @@
 import {
-  //BeforeInsert,
   Column,
   CreateDateColumn,
   DeleteDateColumn,
@@ -16,25 +15,25 @@ interface Exercise {
   repetitions: string;
 }
 
-
-@Entity('Workout')
-export class WorkoutEntity {
+@Entity('Students')
+export class StudentsEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'text', nullable: false})
-  trainingName: string;
+  @Column({ type: 'text', nullable: false })
+  Name: string;
 
   @Column({ type: 'text', nullable: false })
-  dayOfWeek: string;
+  Email: string
 
+  @Column({ type: 'varchar', length: 256, nullable: true })
+  profileImage: string;
+  
   @Column('jsonb', { nullable: false }) // Usando 'jsonb' para PostgreSQL, ajuste para seu banco de dados
   exercises: Exercise[];
 
-
-@ManyToOne(() => UserEntity, (user) => user.Workouts)
-user: UserEntity;
-
+  @ManyToOne(() => UserEntity, (user) => user.Students)
+  user: UserEntity;
 
   @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
@@ -42,8 +41,6 @@ user: UserEntity;
   @UpdateDateColumn({ type: 'date' })
   updatedAt: Date;
 
-  
   @DeleteDateColumn({ type: 'date' })
   deletedAt: Date;
-
 }

@@ -12,6 +12,7 @@ import * as bcrypt from 'bcrypt';
 import { BadRequestException } from '@nestjs/common';
 import { RoleEnum } from '../../enums/role.enum';
 import { WorkoutEntity } from './workout.entity';
+import { StudentsEntity } from './students.entity';
 
 @Entity('Users')
 export class UserEntity {
@@ -41,8 +42,8 @@ export class UserEntity {
   })
   role: RoleEnum;
 
-  @Column({ type: 'int', default: 0 })
-  credits: number;
+  @OneToMany(() => StudentsEntity, (students) => students.user)
+  Students: StudentsEntity[];
 
   @OneToMany(() => WorkoutEntity, (workout) => workout.user)
   Workouts: WorkoutEntity[];
