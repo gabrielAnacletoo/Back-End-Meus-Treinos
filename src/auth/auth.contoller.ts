@@ -31,7 +31,6 @@ export class AuthController {
     return await this.authService.RegisterAuthService(UserPayLoad, image);
   }
 
-  @UseGuards(AuthGuard, RolesGuards)
   @Roles(RoleEnum.admin)
   @HttpCode(200)
   @Post('personal')
