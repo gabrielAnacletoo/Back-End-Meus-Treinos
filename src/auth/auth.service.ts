@@ -52,7 +52,7 @@ export class AuthService {
     };
   
 
-    
+
 
     try {
       if (
@@ -74,6 +74,50 @@ export class AuthService {
     }
   }
 
+  async LoginAuthServicePersonal(PayLoad: LoginDTO) {
+    try {
+      const { email, password } = PayLoad;
+      // lembrar que true é pra que as propriedades sejam includias no retorno da consulta
+
+      const VerifyUser = await this.usersRepository.findOne({
+        where: { email },
+        select: {
+          id: true,
+          email: true,
+          password: true,
+          role: true,
+        },
+      });
+
+      if (!VerifyUser) {
+        throw new UnauthorizedException('User not found.');
+      }
+
+      const VerifyPassword = await bcrypt.compare(
+        password,
+        VerifyUser.password,
+      );
+
+      if (!VerifyPassword) {
+        throw new UnauthorizedException('wrong email or password.');
+      }
+
+      const Token = {
+        id: VerifyUser.id,
+        email: VerifyUser.email,
+        role: VerifyUser.role,
+      };
+
+      return {
+        token: await this.jwtService.signAsync(Token),
+      };
+    } catch (error) {
+      throw new HttpException(error.message, error.status);
+    }
+  }
+
+
+  
   async LoginAuthService(PayLoad: LoginDTO) {
     try {
       const { email, password } = PayLoad;
@@ -115,4 +159,5 @@ export class AuthService {
       throw new HttpException(error.message, error.status);
     }
   }
+
 }
